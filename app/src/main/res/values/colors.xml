@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    -->
+    <!--change default status bar color-->
+    <color name="colorPrimary">#ffcd2626</color>
+    <color name="colorPrimaryDark">#ffcd2626</color>
+    <color name="colorAccent">#ffcd2626</color>
+
 </resources>
