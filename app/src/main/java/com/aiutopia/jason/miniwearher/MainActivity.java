@@ -1,6 +1,8 @@
 package com.aiutopia.jason.miniwearher;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +37,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final int UPDATE_TODAY_WEATHER = 1;
 
     private ImageView mUpdateBtn;
+    private ImageView mCitySelect;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv,
             temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
@@ -69,14 +72,44 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         initView();
 
+        mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
+        mCitySelect.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.title_update_btn) {
-            String cityCode = "101010100";
+            // add sharedPreference
+            //start
+            SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+            String cityCode = sharedPreferences.getString("main_city_code", "101010100");
+            //TODO 用sharedPreferences存储天气信息，在未刷新前展示
+            //Log.d("myweather", cityCode);
+            //end
+            //String cityCode = "101010100";
             Log.d("myweather", cityCode);
             queryWeather(cityCode);
+        }
+
+        if(view.getId() == R.id.title_city_manager) {
+            Intent i = new Intent(this, SelectCity.class);
+            startActivityForResult(i, 1);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == 1 && resultCode == RESULT_OK){
+            String newCityCode = data.getStringExtra("cityCode");
+            Log.d("myWeather", " 选择的城市代码为： "+newCityCode);
+
+            if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE){
+                Log.d("myWeather", "网络OK");
+                queryWeather(newCityCode);
+            }else {
+                Log.d("myWeather", "网络异常");
+                Toast.makeText(MainActivity.this, "网络异常", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -268,33 +301,4 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
