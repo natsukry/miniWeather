@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Created by Jason on 17/10/2018.
+ *
  */
 
 public class MyApplication extends Application{
@@ -65,6 +66,7 @@ public class MyApplication extends Application{
     }
 
     private CityDB openCityDB() {
+        // 从原始数据库city.db读取数据复制到新的databases1
         String path = "/data"
                 + Environment.getDataDirectory().getAbsolutePath ()
                 + File.separator + getPackageName()

@@ -118,7 +118,8 @@
                 android:layout_marginLeft="15.0dip"
                 android:text="当前温度: 25ºC"
                 android:textColor="@android:color/white"
-                android:textSize="15.0sp"/>
+                android:textSize="15.0sp"
+                android:visibility="invisible"/>
             <!--PM2.5整体信息块-->
             <LinearLayout
                 android:id="@+id/pm2_5_content"

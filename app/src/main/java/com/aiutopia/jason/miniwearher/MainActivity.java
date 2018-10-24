@@ -30,6 +30,7 @@ import util.NetUtil;
 
 /**
  * Created by Jason on 19/09/2018.
+ * TODO 更新天气，污染状况图片
  */
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -42,6 +43,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
 
+
+    // acquire message from queryWeather
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -61,10 +64,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.weather_info);
 
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
-        mUpdateBtn.setOnClickListener(this);  // why "this"
+        mUpdateBtn.setOnClickListener(this);
 
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
             Log.d("myWeather", "网络OK");
+            // TODO Update info when launch app
             Toast.makeText(MainActivity.this, "网络OK！", Toast.LENGTH_LONG).show();
         } else {
             Log.d("myWeather", "网络挂了");
@@ -84,7 +88,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             //start
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
             String cityCode = sharedPreferences.getString("main_city_code", "101010100");
-            //TODO 用sharedPreferences存储天气信息，在未刷新前展示
+            // TODO 用sharedPreferences存储天气信息，在未刷新前展示
             //Log.d("myweather", cityCode);
             //end
             //String cityCode = "101010100";
@@ -98,7 +102,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    // 监听startActivityForResult(i, 1)的activity返回
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        // 获取选择城市返回的 city code
         if (requestCode == 1 && resultCode == RESULT_OK){
             String newCityCode = data.getStringExtra("cityCode");
             Log.d("myWeather", " 选择的城市代码为： "+newCityCode);
@@ -111,11 +117,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Toast.makeText(MainActivity.this, "网络异常", Toast.LENGTH_LONG).show();
             }
         }
+
+
+
     }
 
     private void queryWeather(String cityCode) {
         final String adress = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode;
         Log.d("myWearher", adress);
+
+        // 创建子进程
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -144,6 +155,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         Log.d("myWeather", todayWeather.toString());
                     }
 
+                    // 返回消息给主进程，由Handler mHandler下一步处理
                     Message msg =new Message();
                     msg.what = UPDATE_TODAY_WEATHER;
                     msg.obj=todayWeather;
@@ -161,6 +173,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }).start();
     }
 
+
+    // 解析xml数据并存储在TodayWeather Javabean
     private TodayWeather parseXML(String xmldata) {
 
         TodayWeather todayWeather = null;
@@ -247,7 +261,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                     case XmlPullParser.END_TAG:
                         break;
-                }                 // 进入下一个元素并触发相应事件
+                }
+                // 进入下一个元素并触发相应事件
                 eventType = xmlPullParser.next();
             }
         } catch (XmlPullParserException e) {
@@ -259,7 +274,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
 
-    // init view content
+    // 用"N/A"初始化Views
     void initView(){
         city_name_Tv = (TextView) findViewById(R.id.title_city_name);
         cityTv = (TextView) findViewById(R.id.city);
@@ -286,6 +301,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
 
+    // use .setText() to set data in views
     void updateTodayWeather(TodayWeather todayWeather) {
         city_name_Tv.setText(todayWeather.getCity()+"天气");
         cityTv.setText(todayWeather.getCity());
@@ -298,7 +314,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         climateTv.setText(todayWeather.getType());
         windTv.setText("风力:"+todayWeather.getFengli());
         Toast.makeText(MainActivity.this,"更新成功！",Toast.LENGTH_SHORT).show();
-
+       
     }
 
 }
