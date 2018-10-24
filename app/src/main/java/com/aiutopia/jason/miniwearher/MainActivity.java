@@ -67,14 +67,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mUpdateBtn.setOnClickListener(this);
 
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
+            // 有网络时自动更新
             Log.d("myWeather", "网络OK");
-            // TODO Update info when launch app
-            Toast.makeText(MainActivity.this, "网络OK！", Toast.LENGTH_LONG).show();
+
+            //Toast.makeText(MainActivity.this, "网络OK！", Toast.LENGTH_LONG).show();
         } else {
+            // 无网络时显示"N/A"
             Log.d("myWeather", "网络挂了");
-            Toast.makeText(MainActivity.this, "网络挂了！", Toast.LENGTH_LONG).show();
+
+            // Toast.makeText(MainActivity.this, "网络挂了！", Toast.LENGTH_LONG).show();
         }
-        initView();
+        initViewByNA();
+        // TODO Update info when launch app
+        // TODO TEST 启动时自动更新天气
+        SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+        String cityCode = sharedPreferences.getString("main_city_code", "101010100");
+        queryWeather(cityCode);
+        //
 
         mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
@@ -275,7 +284,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
     // 用"N/A"初始化Views
-    void initView(){
+    void initViewByNA(){
         city_name_Tv = (TextView) findViewById(R.id.title_city_name);
         cityTv = (TextView) findViewById(R.id.city);
         timeTv = (TextView) findViewById(R.id.time);

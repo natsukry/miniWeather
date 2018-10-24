@@ -1,6 +1,7 @@
 package com.aiutopia.jason.miniwearher;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,7 +32,7 @@ public class SelectCity extends Activity implements View.OnClickListener{
         mBackBtn.setOnClickListener(this);
 
         // 从MyApplication中获取List<City>
-        List cityNameList = new ArrayList<>();
+        final List cityNameList = new ArrayList<>();
         final List cityCodeList = new ArrayList<>();
         // getApplication()获取到Application类
         List<City> mCityList = ((MyApplication)getApplication()).getCityList();
@@ -61,10 +62,25 @@ public class SelectCity extends Activity implements View.OnClickListener{
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(SelectCity.this, "Clicked: "+position,Toast.LENGTH_LONG).show();
+                String selectedCityCode = (String)cityCodeList.get(position);
+                String selectedCityName = (String)cityNameList.get(position);
+                Toast.makeText(SelectCity.this, "选择城市: "+selectedCityName+": "+selectedCityCode,Toast.LENGTH_LONG).show();
                 // 构造消息并返回
                 Intent i = new Intent();
-                i.putExtra("cityCode",(String)cityCodeList.get(position));
+                i.putExtra("cityCode",selectedCityCode);
+
+
+                //TODO Test SharedPreferences
+                SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                // 设置main_city_code为当前选择的city
+                editor.putString("main_city_code",selectedCityCode);
+
+                // 异步写入数据
+                editor.apply();
+                //
+
+
                 setResult(RESULT_OK, i);
                 // 结束当前activity
                 finish();
