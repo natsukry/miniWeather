@@ -43,10 +43,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
 
-
-    // acquire message from queryWeather
+    // Each Handler instance is associated with a single thread and that thread's message queue.
     private Handler mHandler = new Handler() {
         @Override
+        // acquire message from queryWeather
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case UPDATE_TODAY_WEATHER:
@@ -80,10 +80,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
         initViewByNA();
         // TODO Update info when launch app
         // TODO TEST 启动时自动更新天气
+        // Retrieve and hold the contents of the preferences file 'name', returning
+        // a SharedPreferences through which you can retrieve and modify its values.
+        // name "config" Desired preferences file.
+        // "MODE_PRIVATE" File creation mode: the default mode, where the created file can only be
+        // accessed by the calling application (or all applications sharing the same user ID)
         SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+        // Retrieve a String value from the preferences. return the 2nd param if the preference
+        // does not exist
         String cityCode = sharedPreferences.getString("main_city_code", "101010100");
         queryWeather(cityCode);
-        //
 
         mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
@@ -142,12 +148,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 HttpURLConnection con = null;
                 TodayWeather todayWeather = null;
                 try {
+                    // Creates a new URL instance
                     URL url = new URL(adress);
+                    // Returns a new connection to the resource referred to by this URL.
+                    // 返回为URLConnection对象，类型转换为HttpURLConnection
                     con = (HttpURLConnection) url.openConnection();
+                    // Sets the request command which will be sent to the remote HTTP server.
                     con.setRequestMethod("GET");
+                    // Sets the maximum time in milliseconds to wait while connecting.
                     con.setConnectTimeout(8000);
+                    // Sets the maximum time to wait for an input stream read to complete before giving up.
                     con.setReadTimeout(8000);
+                    // returns an {@code InputStream} for reading data from the resource pointed by
+                    // this {@code URLConnection}.
                     InputStream in = con.getInputStream();
+                    // Constructs a new {@code BufferedReader}
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     StringBuilder response = new StringBuilder();
                     String str;
@@ -166,8 +181,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                     // 返回消息给主进程，由Handler mHandler下一步处理
                     Message msg =new Message();
+                    //the recipient can identify what this message is about.
                     msg.what = UPDATE_TODAY_WEATHER;
+                    // An arbitrary object to send to the recipient.
                     msg.obj=todayWeather;
+                    // Pushes a message onto the end of the message queue after all pending messages
+                    // before the current time. It will be received in {@link #handleMessage},
                     mHandler.sendMessage(msg);
 
 
@@ -196,21 +215,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int typeCount = 0;
 
         try {
+
             XmlPullParserFactory fac = XmlPullParserFactory.newInstance();
+            // Creates a new instance of a PullParserFactory that can be used to create XML pull parsers.
             XmlPullParser xmlPullParser = fac.newPullParser();
+            // Construct a new {@code StringReader} with {@code str} as source.
+            // Set the input source for parser to the given reader and resets the parser.
             xmlPullParser.setInput(new StringReader(xmldata));
+            // Returns the type of the current event (START_TAG, END_TAG, TEXT, etc.)
             int eventType = xmlPullParser.getEventType();
             Log.d("myWeather", "parseXML");
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
+                    // 当前位置是文档开始
                     case XmlPullParser.START_DOCUMENT:
                         break;
+                    // 当前位置是文档标签开始
                     case XmlPullParser.START_TAG:
                         if (xmlPullParser.getName().equals("resp")){
                             todayWeather = new TodayWeather();
                         }
                         if (todayWeather != null) {
                             if (xmlPullParser.getName().equals("city")) {
+                                // Get next parsing event
                                 eventType = xmlPullParser.next();
                                 todayWeather.setCity(xmlPullParser.getText());
                                 Log.d("myWeather", "city:    " + xmlPullParser.getText());

@@ -18,8 +18,9 @@ import java.util.List;
  * Created by Jason on 17/10/2018.
  *
  */
-
+// Application : Base class for those who need to maintain global application state.
 public class MyApplication extends Application{
+
     private static final String TAG = "MyAPP";
     private static MyApplication mApplication;
     private CityDB mCityDB;
