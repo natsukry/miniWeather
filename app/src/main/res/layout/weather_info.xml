@@ -66,7 +66,8 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/title"
         android:background="@drawable/biz_plugin_weather_shenzhen_bg"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/weather_disp">
         <!--今日天气信息-->
         <RelativeLayout
             android:id="@+id/weather_today"
@@ -190,7 +191,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/humidity"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="25.0dip">
+                android:layout_marginTop="25.0dip"
+                android:id="@+id/today_weather_block">
 
                 <!-- 天气情况图片示例 -->
                 <ImageView
@@ -250,9 +252,18 @@
             </RelativeLayout>
         </RelativeLayout>
         <!--七日天气信息-->
+        <android.support.v4.view.ViewPager
+            android:layout_below="@id/weather_today"
+            android:id="@+id/vpager_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
         <!--Ad等信息-->
 
+
     </LinearLayout>
+
+
 
 
 </RelativeLayout>
