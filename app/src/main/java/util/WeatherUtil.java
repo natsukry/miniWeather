@@ -163,6 +163,24 @@ public class WeatherUtil {
             case "多云":
                 iv.setImageResource(R.drawable.cloudy);
                 break;
+            case "小雨":
+                iv.setImageResource(R.drawable.lightrain);
+                break;
+            case "中雨":
+                iv.setImageResource(R.drawable.zrain);
+                break;
+            case "大雨":
+                iv.setImageResource(R.drawable.drain);
+                break;
+            case "小雪":
+                iv.setImageResource(R.drawable.xsnow);
+                break;
+            case "中雪":
+                iv.setImageResource(R.drawable.zsnow);
+                break;
+            case "大雪":
+                iv.setImageResource(R.drawable.dsnow);
+                break;
             default:
                 iv.setImageResource(R.drawable.sunny);
                 break;

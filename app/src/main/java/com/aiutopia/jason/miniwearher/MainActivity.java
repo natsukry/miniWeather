@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.TextView;
 
+import com.aiutopia.jason.app.MyApplication;
 import com.aiutopia.jason.bean.TodayWeather;
 import com.aiutopia.jason.bean.Weather;
 import com.baidu.location.BDLocation;
@@ -44,6 +45,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.LocationUtil;
 import util.MyPagerAdapter;
 import util.NetUtil;
 import util.WeatherUtil;
@@ -59,6 +61,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final int UPDATE_FORECAST_WEATHER = 2;
     private ImageView mUpdateBtn;
     private ImageView mCitySelect;
+    private ImageView mTitleLocation;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv,
             temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
@@ -103,6 +106,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.weather_info);
 
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
+        mTitleLocation = (ImageView) findViewById(R.id.title_location);
+        mTitleLocation.setOnClickListener(this);
         // must-having before calling onClick method
         mUpdateBtn.setOnClickListener(this);
 
@@ -161,6 +166,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (view.getId() == R.id.title_city_manager) {
             Intent i = new Intent(this, SelectCity.class);
             startActivityForResult(i, 1);
+        }
+        // 点击定位
+        if (view.getId() == R.id.title_location) {
+            LocationUtil.initLocationUtil(getApplicationContext(), (MyApplication)getApplication());
+            SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+            String locCityName = sharedPreferences.getString("loc_city_name", "北京");
+            String locCityCode = sharedPreferences.getString("loc_city_code", "101010100");
+            Log.d("_-_-",locCityName+locCityCode);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (locCityCode != sharedPreferences.getString("main_city_code","101010100")){
+                Log.d("LOC CHANGED:", locCityName);
+                queryWeather(locCityCode);
+                editor.putString("main_city_code", locCityCode);
+                editor.apply();
+            }
+            Toast.makeText(MainActivity.this, "定位："+locCityName, Toast.LENGTH_LONG).show();
+
         }
     }
 

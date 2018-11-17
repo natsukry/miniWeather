@@ -6,8 +6,12 @@
     <color name="colorAccent">#FF4081</color>
     -->
     <!--change default status bar color-->
-    <color name="colorPrimary">#ffcd2626</color>
-    <color name="colorPrimaryDark">#ffcd2626</color>
-    <color name="colorAccent">#ffcd2626</color>
+    <!--<color name="colorPrimary">#ffcd2626</color>-->
+    <!--<color name="colorPrimaryDark">#ffcd2626</color>-->
+    <!--<color name="colorAccent">#ffcd2626</color>-->
+    <color name="colorPrimary">#231369</color>
+    <color name="colorPrimaryDark">#231369</color>
+    <color name="colorAccent">#231366</color>
+    <color name="colorMain">#231369</color>
 
 </resources>

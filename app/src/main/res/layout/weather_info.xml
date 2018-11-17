@@ -10,7 +10,7 @@
         android:id="@+id/title"
         android:layout_width="fill_parent"
         android:layout_height="45.0dip"
-        android:background="#ffcd2626"
+        android:background="@color/colorMain"
         android:gravity="center_vertical">
 
         <ImageView
@@ -25,7 +25,7 @@
             android:layout_height="40dip"
             android:layout_marginTop="2.0dip"
             android:layout_toRightOf="@+id/title_city_manager"
-            android:background="#A71717"/>
+            android:background="@color/colorMain"/>
 
         <TextView
             android:id="@+id/title_city_name"
@@ -35,7 +35,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="5dip"
             android:text="北京天气"
-            android:textColor="#ffffffff"
+            android:textColor="@android:color/white"
             android:textSize="22.0sp"/>
 
         <ImageView
@@ -62,12 +62,13 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/weather_disp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/title"
-        android:background="@drawable/biz_plugin_weather_shenzhen_bg"
-        android:orientation="vertical"
-        android:id="@+id/weather_disp">
+
+        android:background="@color/colorMain"
+        android:orientation="vertical">
         <!--今日天气信息-->
         <RelativeLayout
             android:id="@+id/weather_today"
@@ -111,6 +112,7 @@
                 android:text="湿度:57%"
                 android:textColor="@android:color/white"
                 android:textSize="15.0sp"/>
+
             <TextView
                 android:id="@+id/current_temperature"
                 android:layout_width="wrap_content"
@@ -186,13 +188,13 @@
             </LinearLayout>
             <!--今日天气信息块-->
             <RelativeLayout
+                android:id="@+id/today_weather_block"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/humidity"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="25.0dip"
-                android:id="@+id/today_weather_block">
+                android:layout_marginTop="25.0dip">
 
                 <!-- 天气情况图片示例 -->
                 <ImageView
@@ -253,17 +255,35 @@
         </RelativeLayout>
         <!--七日天气信息-->
         <android.support.v4.view.ViewPager
-            android:layout_below="@id/weather_today"
+            android:layout_margin="20dip"
             android:id="@+id/vpager_one"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_height="180dip"
+            android:layout_below="@id/weather_today"
+            android:layout_gravity="center"/>
         <!--Ad等信息-->
+        <!--穿衣指数-->
+        <LinearLayout
+            android:layout_margin="20dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:textSize="25dip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="穿衣指数"/>
+
+            <TextView
+                android:layout_marginTop="10dip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="建议着厚外套加毛衣等服装。年老体弱者宜着大衣、呢外套加羊毛衫。"/>
+        </LinearLayout>
 
 
     </LinearLayout>
-
-
 
 
 </RelativeLayout>
