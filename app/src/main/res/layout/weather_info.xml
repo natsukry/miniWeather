@@ -46,11 +46,15 @@
             android:layout_gravity="center"
             android:src="@drawable/title_update"/>
 
+
+
         <ImageView
             android:id="@+id/title_share"
             android:layout_width="45.0dip"
             android:layout_height="45.0dip"
+
             android:layout_toLeftOf="@id/title_update_btn"
+
             android:src="@drawable/title_share"/>
 
         <ImageView
@@ -59,6 +63,18 @@
             android:layout_height="45.0dip"
             android:layout_toLeftOf="@+id/title_share"
             android:src="@drawable/base_action_bar_action_city"/>
+
+        <ProgressBar
+            android:layout_marginRight="50dip"
+            android:layout_marginTop="5dip"
+            android:layout_toLeftOf="@id/title_location"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:id="@+id/loading_update"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateDrawable="@drawable/anim" />
     </RelativeLayout>
 
     <LinearLayout

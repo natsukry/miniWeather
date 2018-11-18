@@ -149,8 +149,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.title_update_btn) {
-
-
+            findViewById(R.id.title_update_btn).setVisibility(View.GONE);
+            findViewById(R.id.loading_update).setVisibility(View.VISIBLE);
             // add sharedPreference
             //start
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
@@ -161,6 +161,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             //String cityCode = "101010100";
             Log.d("myweather", cityCode);
             queryWeather(cityCode);
+            findViewById(R.id.title_update_btn).setVisibility(View.VISIBLE);
+            findViewById(R.id.loading_update).setVisibility(View.GONE);
         }
 
         if (view.getId() == R.id.title_city_manager) {
@@ -169,6 +171,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         // 点击定位
         if (view.getId() == R.id.title_location) {
+            findViewById(R.id.title_location).setVisibility(View.GONE);
+            findViewById(R.id.loading_update).setVisibility(View.VISIBLE);
             LocationUtil.initLocationUtil(getApplicationContext(), (MyApplication)getApplication());
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
             String locCityName = sharedPreferences.getString("loc_city_name", "北京");
@@ -181,6 +185,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 editor.putString("main_city_code", locCityCode);
                 editor.apply();
             }
+            findViewById(R.id.title_location).setVisibility(View.VISIBLE);
+            findViewById(R.id.loading_update).setVisibility(View.GONE);
             Toast.makeText(MainActivity.this, "定位："+locCityName, Toast.LENGTH_LONG).show();
 
         }
@@ -207,7 +213,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void queryWeather(String cityCode) {
         final String adress = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode;
-        Log.d("myWearher", adress);
+//        Log.d("myWearher", adress);
 
         // 创建子进程
         new Thread(new Runnable() {
@@ -236,15 +242,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     String str;
                     while ((str = reader.readLine()) != null) {
                         response.append(str);
-                        Log.d("myWeather", str);
+//                        Log.d("myWeather", str);
                     }
                     String responseStr = response.toString();
-                    Log.d("myWeather", responseStr);
+//                    Log.d("myWeather", responseStr);
 
 
                     todayWeather = parseXML(responseStr);
                     if (todayWeather != null) {
-                        Log.d("myWeather", todayWeather.toString());
+//                        Log.d("myWeather", todayWeather.toString());
                     }
 
                     // 返回消息给主进程，由Handler mHandler下一步处理
@@ -291,7 +297,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             xmlPullParser.setInput(new StringReader(xmldata));
             // Returns the type of the current event (START_TAG, END_TAG, TEXT, etc.)
             int eventType = xmlPullParser.getEventType();
-            Log.d("myWeather", "parseXML");
+//            Log.d("myWeather", "parseXML");
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
                     // 当前位置是文档开始
